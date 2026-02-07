@@ -3,6 +3,8 @@ function navbar()
     const $navbar    = $("#navbar");
     const $hamburger = $("#hamburger");
     const $drop1     = $("#drop1");
+
+    /* HAMBURGER */
     if ($hamburger.length)
     {
         $hamburger.on("click", function (e)
@@ -11,6 +13,7 @@ function navbar()
             $navbar.toggleClass("open");
         });
     }
+
     if ($drop1.length)
     {
         $drop1.find(".dropbtn").on("click", function (e)
@@ -18,12 +21,20 @@ function navbar()
             e.stopPropagation();
             $drop1.toggleClass("open");
         });
+
+        /* 🔥 DROPDOWN MENU TIKLARI */
+        $drop1.find(".dropdown-menu").on("click", function (e)
+        {
+            e.stopPropagation();
+        });
     }
+
     $(document).on("click", function ()
     {
         if ($drop1.length) $drop1.removeClass("open");
         if ($navbar.length) $navbar.removeClass("open");
     });
+
     $(document).on("keydown", function (e)
     {
         if (e.key === "Escape")
@@ -116,3 +127,39 @@ function slide()
     window.goSlide = goSlide; // dışarıdan tıklama için
     startProgress();
 }
+
+function yazi()
+{
+    const jsonStr = $('#HiddenField1').val()?.trim();
+    if (!jsonStr) return;
+    let data;
+    try
+    {
+        data = JSON.parse(jsonStr);
+    }
+    catch (e)
+    {
+        console.error("JSON parse hatası", e);
+        return;
+    }
+    const $wrapper = $('.danismanlik-card');
+    $wrapper.empty();
+    data.forEach(item =>
+    {
+        const icerik = item.icerik || "";
+        const stil = item.stil;
+        if (stil === "1")
+        {
+            $wrapper.append($('<div>').addClass('baslikgirintili').text(icerik));//Baslik
+        }
+        else if (stil === "2")
+        {
+            $wrapper.append($('<div>').addClass('normalyasli').text(icerik));//Normal Yaslı
+        }
+        else if (stil === "3")
+        {
+            $wrapper.append($('<div>').addClass('kirmiziyasli').text(icerik));//Kırmızı Yaslı
+        }
+    });    
+}
+
