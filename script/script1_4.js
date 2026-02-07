@@ -65,7 +65,7 @@ function slide()
         return;
     }
 
-    const BASE_IMG_URL = "https://cdn.jsdelivr.net/gh/MEHMETCERANX12/seckinlergrup@main/resim/";
+    const BASE_IMG_URL = "https://cdn.jsdelivr.net/gh/MEHMETCERANX12/seckinlergrup@main/resimx/";
     const DEFAULT_IMG  = BASE_IMG_URL + "1.jpg";
 
     const $slides = $(".slide");
