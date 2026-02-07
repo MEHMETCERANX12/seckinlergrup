@@ -14,6 +14,7 @@ function navbar()
         });
     }
 
+    /* DROPDOWN BUTTON */
     if ($drop1.length)
     {
         $drop1.find(".dropbtn").on("click", function (e)
@@ -29,12 +30,14 @@ function navbar()
         });
     }
 
+    /* SAYFA DIŞI TIK */
     $(document).on("click", function ()
     {
         if ($drop1.length) $drop1.removeClass("open");
         if ($navbar.length) $navbar.removeClass("open");
     });
 
+    /* ESC TUŞU */
     $(document).on("keydown", function (e)
     {
         if (e.key === "Escape")
@@ -45,11 +48,12 @@ function navbar()
     });
 }
 
+
 function slide()
 {
-    const jsonStr = $('#HiddenField1').val()?.trim();
+    const jsonStr = $('#HiddenField1').val()?.trim();    
     if (!jsonStr) return;
-
+    console.log(jsonStr);
     let data;
     try
     {
@@ -61,27 +65,51 @@ function slide()
         return;
     }
 
-    /* VERİ BASMA */
+    const BASE_IMG_URL = "https://cdn.jsdelivr.net/gh/MEHMETCERANX12/seckinlergrup@main/resim/";
+    const DEFAULT_IMG  = BASE_IMG_URL + "1.jpg";
+
+    const $slides = $(".slide");
+    const $items  = $(".news-item");
+    const $bars   = $(".progress span");
+
+    /* === VERİ BASMA + RESİM DEĞİŞTİRME === */
     data.slice(0, 7).forEach((row, i) =>
     {
+        if (!$slides.eq(i).length) return;
+
+        /* Metinler */
         const base = i * 5;
         for (let j = 1; j <= 5; j++)
         {
             $('#x' + (base + j)).text(row['x' + j] || '');
         }
 
-        $('.slide').eq(i)
-            .find('a')
-            .attr('href', 'yazi.aspx?id=' + encodeURIComponent(row.id));
+        /* Link */
+        if (row.id)
+        {
+            $slides.eq(i).find('a')
+                .attr('href', 'yazi.aspx?id=' + encodeURIComponent(row.id));
+        }
+
+        /* Arka plan resmi */
+        let imgUrl = DEFAULT_IMG;
+        if (row.resim && row.resim > 0)
+        {
+            imgUrl = BASE_IMG_URL + row.resim + ".jpg";
+        }
+
+        $slides.eq(i).css(
+            "background-image",
+            "url('" + imgUrl + "')"
+        );
     });
 
+    /* === SLIDER ANİMASYON === */
     let index = 0;
-    const $slides = $(".slide");
-    const $items  = $(".news-item");
-    const $bars   = $(".progress span");
     const duration = 7000;
     let startTime = null;
     let anim;
+
     function startProgress()
     {
         $bars.css("width", "0%");
@@ -113,9 +141,9 @@ function slide()
     {
         if (!$slides.length) return;
 
-        $slides.eq(index).removeClass("active");
-        $items.eq(index).removeClass("active");
-        $bars.eq(index).css("width", "0%");
+        $slides.removeClass("active");
+        $items.removeClass("active");
+        $bars.css("width", "0%");
 
         index = i;
 
@@ -124,7 +152,8 @@ function slide()
 
         startProgress();
     }
-    window.goSlide = goSlide; // dışarıdan tıklama için
+
+    window.goSlide = goSlide; // news-bar tıklamaları için
     startProgress();
 }
 
@@ -160,6 +189,5 @@ function yazi()
         {
             $wrapper.append($('<div>').addClass('kirmiziyasli').text(icerik));//Kırmızı Yaslı
         }
-    });    
+    });
 }
-
