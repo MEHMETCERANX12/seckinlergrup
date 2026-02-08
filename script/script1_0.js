@@ -117,16 +117,13 @@ function slide()
             $('#x' + (base + j)).text(row['x' + j] || '');
         }
 
+        let link = "#";
         if (row.id)
         {
-            const link = 'yazi.aspx?id=' + encodeURIComponent(row.id);
-            $slide.attr('data-href', link).css('cursor', 'pointer');
-            $slide.find('a').attr('href', link);
+            link = 'yazi.aspx?id=' + encodeURIComponent(row.id);
         }
-        else
-        {
-            $slide.removeAttr('data-href').css('cursor', 'default');
-        }
+
+        $slide.find('.slide-link').attr('href', link);
 
         let imgUrl = DEFAULT_IMG;
         if (row.resim && row.resim > 0)
@@ -137,15 +134,7 @@ function slide()
         $slide.css("background-image", "url('" + imgUrl + "')");
     });
 
-    /* === SLIDE TIKLAMA (TEK KAYNAK) === */
-    $(".slide").off("click").on("click", function ()
-    {
-        const href = $(this).attr("data-href");
-        if (!href) return;
-        window.location.href = href;
-    });
-
-    /* === ANİMASYON === */
+    /* === SLIDER ANİMASYON === */
     let index = 0;
     const duration = 7000;
     let startTime = null;
