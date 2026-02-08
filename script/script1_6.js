@@ -134,12 +134,15 @@ function slide()
         $slides.eq(i).css("background-image", "url('" + imgUrl + "')");
     });
 
-    $(".slide").off("click").on("click", function (e)
-    {
-        if ($(e.target).closest("a").length) return;
-        const link = $(this).data("href");
-        if (link) window.location.href = link;
-    });
+$(".slide").off("click").on("click", function (e)
+{
+    const $a = $(this).find("a").first();
+    const href = $a.attr("href");
+    if (!href) return;
+    if ($(e.target).closest("a").length) return;
+    window.location.href = href;
+});
+
 
     let index = 0;
     const duration = 7000;
