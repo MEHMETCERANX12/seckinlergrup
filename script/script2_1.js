@@ -99,7 +99,7 @@ function slide()
     const $items  = $(".news-item");
     const $bars   = $(".progress span");
 
-    /* ===== VERİ BAS ===== */
+    /* === VERİ BAS === */
     data.slice(0, 7).forEach((row, i) =>
     {
         const $slide = $slides.eq(i);
@@ -116,7 +116,6 @@ function slide()
             : '#';
 
         $slide.find('.slide-link').attr('href', link);
-        $slide.find('.slide-overlay').attr('href', link);
 
         const img = row.resim > 0
             ? BASE_IMG + row.resim + ".jpg"
@@ -125,7 +124,7 @@ function slide()
         $slide.css("background-image", "url('" + img + "')");
     });
 
-    /* ===== ANİMASYON ===== */
+    /* === SLIDER === */
     let index = 0;
     const duration = 7000;
     let startTime = null;
@@ -142,10 +141,10 @@ function slide()
     function step(ts)
     {
         if (!startTime) startTime = ts;
-        const p = Math.min(((ts - startTime) / duration) * 100, 100);
-        $bars.eq(index).css("width", p + "%");
+        const percent = Math.min(((ts - startTime) / duration) * 100, 100);
+        $bars.eq(index).css("width", percent + "%");
 
-        if (p < 100) anim = requestAnimationFrame(step);
+        if (percent < 100) anim = requestAnimationFrame(step);
         else goSlide((index + 1) % $slides.length);
     }
 
@@ -164,6 +163,7 @@ function slide()
     window.goSlide = goSlide;
     startProgress();
 }
+
 
 
 
