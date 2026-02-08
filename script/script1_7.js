@@ -105,9 +105,11 @@ function slide()
     const $items  = $(".news-item");
     const $bars   = $(".progress span");
 
+    /* === VERİ + RESİM + LINK === */
     data.slice(0, 7).forEach((row, i) =>
     {
-        if (!$slides.eq(i).length) return;
+        const $slide = $slides.eq(i);
+        if (!$slide.length) return;
 
         const base = i * 5;
         for (let j = 1; j <= 5; j++)
@@ -118,11 +120,12 @@ function slide()
         if (row.id)
         {
             const link = 'yazi.aspx?id=' + encodeURIComponent(row.id);
-            $slides.eq(i)
-                .attr('data-href', link)
-                .css('cursor', 'pointer');
-
-            $slides.eq(i).find('a').attr('href', link);
+            $slide.attr('data-href', link).css('cursor', 'pointer');
+            $slide.find('a').attr('href', link);
+        }
+        else
+        {
+            $slide.removeAttr('data-href').css('cursor', 'default');
         }
 
         let imgUrl = DEFAULT_IMG;
@@ -131,19 +134,18 @@ function slide()
             imgUrl = BASE_IMG_URL + row.resim + ".jpg";
         }
 
-        $slides.eq(i).css("background-image", "url('" + imgUrl + "')");
+        $slide.css("background-image", "url('" + imgUrl + "')");
     });
 
-$(".slide").off("click").on("click", function (e)
-{
-    const $a = $(this).find("a").first();
-    const href = $a.attr("href");
-    if (!href) return;
-    if ($(e.target).closest("a").length) return;
-    window.location.href = href;
-});
+    /* === SLIDE TIKLAMA (TEK KAYNAK) === */
+    $(".slide").off("click").on("click", function ()
+    {
+        const href = $(this).attr("data-href");
+        if (!href) return;
+        window.location.href = href;
+    });
 
-
+    /* === ANİMASYON === */
     let index = 0;
     const duration = 7000;
     let startTime = null;
@@ -162,7 +164,7 @@ $(".slide").off("click").on("click", function (e)
         if (!startTime) startTime = timestamp;
 
         const progress = timestamp - startTime;
-        const percent = Math.min((progress / duration) * 100, 100);
+        const percent  = Math.min((progress / duration) * 100, 100);
 
         $bars.eq(index).css("width", percent + "%");
 
@@ -195,6 +197,7 @@ $(".slide").off("click").on("click", function (e)
     window.goSlide = goSlide;
     startProgress();
 }
+
 
 
 
