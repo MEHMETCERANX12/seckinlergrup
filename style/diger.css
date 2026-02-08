@@ -1,0 +1,114 @@
+/* ======================
+   DANIŞMANLIK SAYFASI
+====================== */
+
+/* Sayfa gövdesi */
+.danismanlik-wrapper{
+    max-width:1300px;
+    margin:0 auto;
+    padding:80px 24px 100px;
+}
+
+/* Kart */
+.danismanlik-card{
+    background:#ffffff;
+    border:1px solid var(--border-soft);
+    border-radius:18px;
+    padding:50px;
+}
+
+/* Başlık */
+.danismanlik-title{
+    font-size:36px;
+    font-weight:700;
+    margin-bottom:20px;
+    color:var(--text-main);
+}
+
+
+.baslik
+{
+    font-weight: bold;
+    font-size: 24px;
+    font-family: calibri;
+}
+.baslikgirintili
+{
+    font-weight: bold;
+    font-size: 24px;
+    font-family: calibri;
+    text-indent: 50px;
+}
+
+.normal
+{
+    font-weight: normal;
+    font-size: 16px;
+    font-family: calibri;
+    line-height: 1.4;
+}
+.normalyasli
+{
+    font-weight: normal;
+    font-size: 16px;
+    font-family: Calibri;
+    text-align: justify;
+    line-height: 1.3;
+    margin-bottom: 10px;
+    text-indent: 50px;
+}
+.kirmiziyasli
+{
+    font-weight: normal;
+    font-size: 16px;
+    font-family: Calibri;
+    text-align: justify;
+    line-height: 1.3;
+    margin-bottom: 10px;
+    text-indent: 50px;
+    color: brown;
+}
+
+
+/* CTA */
+.danismanlik-cta{
+    margin-top:50px;
+    padding:30px;
+    border-radius:14px;
+    background:var(--bg-soft);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+}
+
+.danismanlik-cta h4{
+    margin:0;
+    font-size:20px;
+}
+
+.danismanlik-cta a{
+    background:var(--accent);
+    color:#000;
+    padding:12px 26px;
+    border-radius:8px;
+    font-weight:600;
+    text-decoration:none;
+}
+
+/* Responsive */
+@media(max-width:768px){
+
+    .danismanlik-card{
+        padding:30px;
+    }
+
+    .danismanlik-title{
+        font-size:28px;
+    }
+
+    .danismanlik-cta{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
