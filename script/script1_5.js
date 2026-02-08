@@ -48,115 +48,6 @@ function navbar()
     });
 }
 
-
-function slide()
-{
-    const jsonStr = $('#HiddenField1').val()?.trim();    
-    if (!jsonStr) return;
-    console.log(jsonStr);
-    let data;
-    try
-    {
-        data = JSON.parse(jsonStr);
-    }
-    catch (e)
-    {
-        console.error("JSON parse hatası", e);
-        return;
-    }
-
-    const BASE_IMG_URL = "https://cdn.jsdelivr.net/gh/MEHMETCERANX12/seckinlergrup@main/resimx/";
-    const DEFAULT_IMG  = BASE_IMG_URL + "1.jpg";
-
-    const $slides = $(".slide");
-    const $items  = $(".news-item");
-    const $bars   = $(".progress span");
-
-    /* === VERİ BASMA + RESİM DEĞİŞTİRME === */
-    data.slice(0, 7).forEach((row, i) =>
-    {
-        if (!$slides.eq(i).length) return;
-
-        /* Metinler */
-        const base = i * 5;
-        for (let j = 1; j <= 5; j++)
-        {
-            $('#x' + (base + j)).text(row['x' + j] || '');
-        }
-
-        /* Link */
-        if (row.id)
-        {
-            $slides.eq(i).find('a')
-                .attr('href', 'yazi.aspx?id=' + encodeURIComponent(row.id));
-        }
-
-        /* Arka plan resmi */
-        let imgUrl = DEFAULT_IMG;
-        if (row.resim && row.resim > 0)
-        {
-            imgUrl = BASE_IMG_URL + row.resim + ".jpg";
-        }
-
-        $slides.eq(i).css(
-            "background-image",
-            "url('" + imgUrl + "')"
-        );
-    });
-
-    /* === SLIDER ANİMASYON === */
-    let index = 0;
-    const duration = 7000;
-    let startTime = null;
-    let anim;
-
-    function startProgress()
-    {
-        $bars.css("width", "0%");
-        startTime = null;
-        cancelAnimationFrame(anim);
-        anim = requestAnimationFrame(progressStep);
-    }
-
-    function progressStep(timestamp)
-    {
-        if (!startTime) startTime = timestamp;
-
-        const progress = timestamp - startTime;
-        const percent  = Math.min((progress / duration) * 100, 100);
-
-        $bars.eq(index).css("width", percent + "%");
-
-        if (progress < duration)
-        {
-            anim = requestAnimationFrame(progressStep);
-        }
-        else
-        {
-            goSlide((index + 1) % $slides.length);
-        }
-    }
-
-    function goSlide(i)
-    {
-        if (!$slides.length) return;
-
-        $slides.removeClass("active");
-        $items.removeClass("active");
-        $bars.css("width", "0%");
-
-        index = i;
-
-        $slides.eq(index).addClass("active");
-        $items.eq(index).addClass("active");
-
-        startProgress();
-    }
-
-    window.goSlide = goSlide; // news-bar tıklamaları için
-    startProgress();
-}
-
 function yazi()
 {
     const jsonStr = $('#HiddenField1').val()?.trim();
@@ -191,3 +82,116 @@ function yazi()
         }
     });
 }
+
+function slide()
+{
+    const jsonStr = $('#HiddenField1').val()?.trim();
+    if (!jsonStr) return;
+
+    let data;
+    try
+    {
+        data = JSON.parse(jsonStr);
+    }
+    catch
+    {
+        return;
+    }
+
+    const BASE_IMG_URL = "https://cdn.jsdelivr.net/gh/MEHMETCERANX12/seckinlergrup@main/resimx/";
+    const DEFAULT_IMG  = BASE_IMG_URL + "1.jpg";
+
+    const $slides = $(".slide");
+    const $items  = $(".news-item");
+    const $bars   = $(".progress span");
+
+    data.slice(0, 7).forEach((row, i) =>
+    {
+        if (!$slides.eq(i).length) return;
+
+        const base = i * 5;
+        for (let j = 1; j <= 5; j++)
+        {
+            $('#x' + (base + j)).text(row['x' + j] || '');
+        }
+
+        if (row.id)
+        {
+            const link = 'yazi.aspx?id=' + encodeURIComponent(row.id);
+            $slides.eq(i)
+                .attr('data-href', link)
+                .css('cursor', 'pointer');
+
+            $slides.eq(i).find('a').attr('href', link);
+        }
+
+        let imgUrl = DEFAULT_IMG;
+        if (row.resim && row.resim > 0)
+        {
+            imgUrl = BASE_IMG_URL + row.resim + ".jpg";
+        }
+
+        $slides.eq(i).css("background-image", "url('" + imgUrl + "')");
+    });
+
+    $(".slide").off("click").on("click", function (e)
+    {
+        if ($(e.target).closest("a").length) return;
+        const link = $(this).data("href");
+        if (link) window.location.href = link;
+    });
+
+    let index = 0;
+    const duration = 7000;
+    let startTime = null;
+    let anim;
+
+    function startProgress()
+    {
+        $bars.css("width", "0%");
+        startTime = null;
+        cancelAnimationFrame(anim);
+        anim = requestAnimationFrame(progressStep);
+    }
+
+    function progressStep(timestamp)
+    {
+        if (!startTime) startTime = timestamp;
+
+        const progress = timestamp - startTime;
+        const percent = Math.min((progress / duration) * 100, 100);
+
+        $bars.eq(index).css("width", percent + "%");
+
+        if (progress < duration)
+        {
+            anim = requestAnimationFrame(progressStep);
+        }
+        else
+        {
+            goSlide((index + 1) % $slides.length);
+        }
+    }
+
+    function goSlide(i)
+    {
+        if (!$slides.length) return;
+
+        $slides.removeClass("active");
+        $items.removeClass("active");
+        $bars.css("width", "0%");
+
+        index = i;
+
+        $slides.eq(index).addClass("active");
+        $items.eq(index).addClass("active");
+
+        startProgress();
+    }
+
+    window.goSlide = goSlide;
+    startProgress();
+}
+
+
+
