@@ -89,23 +89,17 @@ function slide()
     if (!jsonStr) return;
 
     let data;
-    try
-    {
-        data = JSON.parse(jsonStr);
-    }
-    catch
-    {
-        return;
-    }
+    try { data = JSON.parse(jsonStr); }
+    catch { return; }
 
-    const BASE_IMG_URL = "https://cdn.jsdelivr.net/gh/MEHMETCERANX12/seckinlergrup@main/resimx/";
-    const DEFAULT_IMG  = BASE_IMG_URL + "1.jpg";
+    const BASE_IMG = "https://cdn.jsdelivr.net/gh/MEHMETCERANX12/seckinlergrup@main/resimx/";
+    const DEFAULT_IMG = BASE_IMG + "1.jpg";
 
     const $slides = $(".slide");
     const $items  = $(".news-item");
     const $bars   = $(".progress span");
 
-    /* === VERİ + RESİM + LINK === */
+    /* ===== VERİ BAS ===== */
     data.slice(0, 7).forEach((row, i) =>
     {
         const $slide = $slides.eq(i);
@@ -117,24 +111,21 @@ function slide()
             $('#x' + (base + j)).text(row['x' + j] || '');
         }
 
-        let link = "#";
-        if (row.id)
-        {
-            link = 'yazi.aspx?id=' + encodeURIComponent(row.id);
-        }
+        const link = row.id
+            ? 'yazi.aspx?id=' + encodeURIComponent(row.id)
+            : '#';
 
         $slide.find('.slide-link').attr('href', link);
+        $slide.find('.slide-overlay').attr('href', link);
 
-        let imgUrl = DEFAULT_IMG;
-        if (row.resim && row.resim > 0)
-        {
-            imgUrl = BASE_IMG_URL + row.resim + ".jpg";
-        }
+        const img = row.resim > 0
+            ? BASE_IMG + row.resim + ".jpg"
+            : DEFAULT_IMG;
 
-        $slide.css("background-image", "url('" + imgUrl + "')");
+        $slide.css("background-image", "url('" + img + "')");
     });
 
-    /* === SLIDER ANİMASYON === */
+    /* ===== ANİMASYON ===== */
     let index = 0;
     const duration = 7000;
     let startTime = null;
@@ -145,47 +136,35 @@ function slide()
         $bars.css("width", "0%");
         startTime = null;
         cancelAnimationFrame(anim);
-        anim = requestAnimationFrame(progressStep);
+        anim = requestAnimationFrame(step);
     }
 
-    function progressStep(timestamp)
+    function step(ts)
     {
-        if (!startTime) startTime = timestamp;
+        if (!startTime) startTime = ts;
+        const p = Math.min(((ts - startTime) / duration) * 100, 100);
+        $bars.eq(index).css("width", p + "%");
 
-        const progress = timestamp - startTime;
-        const percent  = Math.min((progress / duration) * 100, 100);
-
-        $bars.eq(index).css("width", percent + "%");
-
-        if (progress < duration)
-        {
-            anim = requestAnimationFrame(progressStep);
-        }
-        else
-        {
-            goSlide((index + 1) % $slides.length);
-        }
+        if (p < 100) anim = requestAnimationFrame(step);
+        else goSlide((index + 1) % $slides.length);
     }
 
     function goSlide(i)
     {
-        if (!$slides.length) return;
-
         $slides.removeClass("active");
         $items.removeClass("active");
         $bars.css("width", "0%");
 
         index = i;
-
-        $slides.eq(index).addClass("active");
-        $items.eq(index).addClass("active");
-
+        $slides.eq(i).addClass("active");
+        $items.eq(i).addClass("active");
         startProgress();
     }
 
     window.goSlide = goSlide;
     startProgress();
 }
+
 
 
 
