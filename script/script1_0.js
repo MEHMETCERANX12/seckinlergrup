@@ -165,6 +165,90 @@ function slide()
 }
 
 
+    function digerYazilarTable() {
+        var jsonStr = $('#HiddenField2').val();
+        jsonStr = jsonStr.trim();
+        var data;
+        try { data = JSON.parse(jsonStr); }
+        catch (e) { console.error("JSON parse hatası", e); return; }
+        var aktifId = new URLSearchParams(window.location.search).get("id");
+        if (aktifId) {
+            data = data.filter(function (row) {
+                return row && row.id && row.id !== aktifId;
+            });
+        }
+        $('#digerYazilarTable').DataTable
+        ({
+            destroy: true,
+            data: data,
+            dom: 't',
+            pageLength: -1,
+            order: [[0, "asc"]],
+            language: { url: "https://cdn.datatables.net/plug-ins/2.3.7/i18n/tr.json" },
+            columns:
+            [
+                { data: "x4", title: "Tarih" },
+                { data: "x3", title: "Başlık", render: function (val) { return val || ""; } },
+                { data: "id", title: "İşlem", orderable: false, searchable: false,  render: function (id) { if (!id) return "";  return '<a href="yazi.aspx?id=' + encodeURIComponent(id) + '" class="btn btn-success btn-sm">Yazıyı Oku</a>'; }}
+            ]
+        });
+    }
+
+function yazi()
+{
+    const jsonStr = $('#HiddenField1').val()?.trim();
+    if (!jsonStr) return;
+
+    let data;
+    try
+    {
+        data = JSON.parse(jsonStr);
+    }
+    catch (e)
+    {
+        console.error("JSON parse hatası", e);
+        return;
+    }
+
+    /* SADECE YAZI ALANI */
+    const $wrapper = $('#yazialani');
+    $wrapper.empty();
+
+    if (Array.isArray(data.yazi))
+    {
+        data.yazi.forEach(item =>
+        {
+            const icerik = item.icerik || "";
+            const stil = item.stil;
+
+            if (stil === "1")
+                $wrapper.append($('<div>').addClass('baslikgirintili').text(icerik));
+            else if (stil === "2")
+                $wrapper.append($('<div>').addClass('normalyasli').text(icerik));
+            else if (stil === "3")
+                $wrapper.append($('<div>').addClass('kirmiziyasli').text(icerik));
+        });
+    }
+
+    /* LINK ALANI */
+    if (data.link)
+    {
+        $('#linkalani').show();
+
+        $('#link')
+            .off('click')
+            .on('click', function ()
+            {
+                window.open(data.link, '_blank');
+            });
+
+        $('#linkaciklama').text(data.linkaciklama || '');
+    }
+    else
+    {
+        $('#linkalani').hide();
+    }
+}
 
 
 
