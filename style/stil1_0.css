@@ -624,3 +624,26 @@ body
     font-size:13px;
     color:#9aa4b2;
 }
+
+.cssbutontumu{min-width:6vw;background-color:#cb4335;border:none;border-radius:0.5vw;color:white;font-family:Calibri;font-size:1vw;padding:0.5vw 1vw;box-shadow:0.3vw 0.3vw 0.7vw rgba(0,0,0,0.3);cursor:pointer;transition:background 0.3s ease,color 0.3s ease,transform 0.1s ease;white-space:nowrap}
+.cssbutontumu:hover{transform:scale(1.03);font-family:Calibri}
+.diger-baslik-wrapper
+{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 40px 0 15px 0;
+}
+
+.diger-baslik-line {
+    flex: 1;
+    height: 1px;
+    background: #9f9f9f;
+}
+
+.diger-baslik-text {
+    margin: 0;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+}
