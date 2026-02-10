@@ -227,6 +227,10 @@ function yazi()
                 $wrapper.append($('<div>').addClass('normalyasli').text(icerik));
             else if (stil === "3")
                 $wrapper.append($('<div>').addClass('kirmiziyasli').text(icerik));
+                        else if (stil === "4")
+                $wrapper.append($('<div>').addClass('kirmiziyasli').text(icerik));
+                        else if (stil === "5")
+                $wrapper.append($('<div>').addClass('kirmiziyasli').text(icerik));
         });
     }
 
