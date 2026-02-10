@@ -32,6 +32,15 @@
     font-size: 24px;
     font-family: calibri;
 }
+
+.kalinortala
+{
+    font-weight: bold;
+    font-size: 24px;
+    font-family: calibri;
+    text-align: center;
+}
+
 .baslikgirintili
 {
     font-weight: bold;
@@ -47,6 +56,16 @@
     font-family: calibri;
     line-height: 1.4;
 }
+
+.normalortala
+{
+    font-weight: normal;
+    font-size: 16px;
+    font-family: calibri;
+    line-height: 1.4;
+    text-align: center;
+}
+
 .normalyasli
 {
     font-weight: normal;
@@ -112,3 +131,4 @@
         align-items:flex-start;
     }
 }
+
